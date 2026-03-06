@@ -6,35 +6,35 @@
     <title>Serge | Projects & Builds</title>
     <style>
 <style>
-    /* Dark Theme CSS for Serge's Workspace */
+    /* Oily Dark Theme CSS for Serge's Workspace */
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         line-height: 1.6;
         margin: 0;
         padding: 0;
-        /* Black background */
-        background-color: #0c0c0e;
-        color: #ecf0f1;
+        /* Oily black background */
+        background-color: #121212; 
+        color: #f0f4f8; /* Brighter, crisper white for readability */
+        font-size: 1.15rem; /* Increased overall base font size */
     }
     header {
-        /* Darker black for header */
-        background: #000000;
+        background: #0a0a0a;
         color: #ffffff;
         padding: 4rem 0;
         text-align: center;
-        /* Glowing blue accent bar */
         border-bottom: 3px solid #3498db;
         box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
     }
     header h1 {
         margin: 0;
-        font-size: 3rem;
+        font-size: 3.2rem; /* Larger header */
         letter-spacing: 1px;
     }
     header p {
         color: #bdc3c7;
         margin-top: 1rem;
         font-weight: 300;
+        font-size: 1.2rem; /* Larger subtext */
     }
     .container {
         width: 85%;
@@ -42,24 +42,38 @@
         margin: 3rem auto;
     }
     .project-card {
-        background: #1a1a1c;
+        background: #1e1e1e; /* Slightly lighter oily black to stand out from background */
         padding: 2.5rem;
         margin-bottom: 2.5rem;
         border-radius: 10px;
         border: 1px solid #2a2a2d;
         box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+        
+        /* Smooth transition timing for the hover effect */
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
+    
+    /* The Hover Effect */
+    .project-card:hover {
+        transform: translateY(-8px); /* Lifts the card up slightly */
+        box-shadow: 0 12px 24px rgba(52, 152, 219, 0.25); /* Adds a subtle blue glow */
+        border-color: #3498db; /* Highlights the border in blue */
+    }
+
     h2 {
         color: #ffffff;
         margin-top: 0;
-        font-size: 2rem;
+        font-size: 2.2rem; /* Bigger section titles */
+    }
+    p, ul {
+        font-size: 1.15rem; /* Bigger text inside the project blocks */
     }
     .tag {
         background: #2c3e50;
         color: #3498db;
-        padding: 0.3rem 0.8rem;
+        padding: 0.35rem 0.9rem;
         border-radius: 20px;
-        font-size: 0.85rem;
+        font-size: 0.95rem; /* Larger tags */
         margin-right: 0.6rem;
         border: 1px solid #3498db;
         font-weight: bold;
@@ -80,11 +94,10 @@
         text-align: center;
         padding: 3rem 0;
         color: #95a5a6;
-        font-size: 0.9rem;
-        background-color: #000000;
+        font-size: 1.05rem; /* Bigger footer text */
+        background-color: #0a0a0a;
     }
 </style>
-    </style>
 </head>
 <body>
 
