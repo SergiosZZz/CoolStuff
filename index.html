@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serge | Projects & Builds</title>
+    <style>
+        /* Basic CSS styling to make the page look clean and modern */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 3rem 0;
+            text-align: center;
+            border-bottom: 4px solid #3498db;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            overflow: hidden;
+        }
+        .project-card {
+            background: #ffffff;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 0.5rem;
+        }
+        .tag {
+            background: #3498db;
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Serge's Workspace</h1>
+        <p>Documenting hardware builds, code, and technical projects</p>
+    </header>
+
+    <div class="container">
+        
+        <section class="project-card">
+            <h2>About Me</h2>
+            <p>Welcome to my GitHub page. This is where I host my code repositories and document my progress on various technical builds, circuit designs, and software experiments.</p>
+        </section>
+
+        <section class="project-card">
+            <h2>Bluetooth-Controlled LED Circuit</h2>
+            <div>
+                <span class="tag">Hardware</span>
+                <span class="tag">C++</span>
+                <span class="tag">Microcontroller</span>
+            </div>
+            <p><strong>Overview:</strong> A wireless control system utilizing a mobile device to toggle physical hardware.</p>
+            <h3>Components Used:</h3>
+            <ul>
+                <li>Arduino Nano</li>
+                <li>HC-05 Bluetooth Module</li>
+                <li>Breadboard, LEDs, and 220-ohm Resistors</li>
+            </ul>
+            <h3>How It Works:</h3>
+            <p>This project establishes serial communication between a smartphone and the microcontroller. By sending specific string commands from a mobile Bluetooth terminal, the board parses the incoming data and toggles the corresponding digital pins to control the LED states.</p>
+        </section>
+
+        <section class="project-card">
+            <h2>Next Project Title</h2>
+            <div>
+                <span class="tag">Category</span>
+            </div>
+            <p>Brief description of what you are building next.</p>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Serge. Hosted on GitHub Pages.</p>
+    </footer>
+
+</body>
+</html>
