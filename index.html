@@ -5,99 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serge | Projects & Builds</title>
     <style>
-<style>
-    /* Oily Dark Theme CSS for Serge's Workspace */
-    body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 0;
-        /* Oily black background */
-        background-color: #121212; 
-        color: #f0f4f8; /* Brighter, crisper white for readability */
-        font-size: 1.15rem; /* Increased overall base font size */
-    }
-    header {
-        background: #0a0a0a;
-        color: #ffffff;
-        padding: 4rem 0;
-        text-align: center;
-        border-bottom: 3px solid #3498db;
-        box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
-    }
-    header h1 {
-        margin: 0;
-        font-size: 3.2rem; /* Larger header */
-        letter-spacing: 1px;
-    }
-    header p {
-        color: #bdc3c7;
-        margin-top: 1rem;
-        font-weight: 300;
-        font-size: 1.2rem; /* Larger subtext */
-    }
-    .container {
-        width: 85%;
-        max-width: 1100px;
-        margin: 3rem auto;
-    }
-    .project-card {
-        background: #1e1e1e; /* Slightly lighter oily black to stand out from background */
-        padding: 2.5rem;
-        margin-bottom: 2.5rem;
-        border-radius: 10px;
-        border: 1px solid #2a2a2d;
-        box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-        
-        /* Smooth transition timing for the hover effect */
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-    
-    /* The Hover Effect */
-    .project-card:hover {
-        transform: translateY(-8px); /* Lifts the card up slightly */
-        box-shadow: 0 12px 24px rgba(52, 152, 219, 0.25); /* Adds a subtle blue glow */
-        border-color: #3498db; /* Highlights the border in blue */
-    }
-
-    h2 {
-        color: #ffffff;
-        margin-top: 0;
-        font-size: 2.2rem; /* Bigger section titles */
-    }
-    p, ul {
-        font-size: 1.15rem; /* Bigger text inside the project blocks */
-    }
-    .tag {
-        background: #2c3e50;
-        color: #3498db;
-        padding: 0.35rem 0.9rem;
-        border-radius: 20px;
-        font-size: 0.95rem; /* Larger tags */
-        margin-right: 0.6rem;
-        border: 1px solid #3498db;
-        font-weight: bold;
-    }
-
-    /* Style for the guitar image */
-    .guitar-image {
-        max-width: 100%;
-        height: auto;
-        border-radius: 8px;
-        margin-top: 1.5rem;
-        margin-bottom: 1.5rem;
-        display: block;
-        border: 2px solid #3498db;
-    }
-
-    footer {
-        text-align: center;
-        padding: 3rem 0;
-        color: #95a5a6;
-        font-size: 1.05rem; /* Bigger footer text */
-        background-color: #0a0a0a;
-    }
-</style>
+        /* Oily Dark Theme CSS */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #121212; /* Oily black background */
+            color: #f0f4f8; /* Bright white text */
+            font-size: 1.15rem;
+        }
+        header {
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 4rem 0;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3.2rem;
+            letter-spacing: 1px;
+        }
+        header p {
+            color: #bdc3c7;
+            margin-top: 1rem;
+            font-weight: 300;
+            font-size: 1.2rem;
+        }
+        .container {
+            width: 85%;
+            max-width: 1100px;
+            margin: 3rem auto;
+        }
+        .project-card {
+            background: #1e1e1e; /* Slightly lighter oily black for the blocks */
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            border-radius: 10px;
+            border: 1px solid #2a2a2d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            /* Smooth transition for the hover effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        /* The Hover Effect */
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(52, 152, 219, 0.25);
+            border-color: #3498db;
+        }
+        h2 {
+            color: #ffffff;
+            margin-top: 0;
+            font-size: 2.2rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        h3 {
+            color: #e0e0e0;
+        }
+        p, ul {
+            font-size: 1.15rem;
+            color: #dcdcdc; /* Light grey for paragraphs so it's easy to read */
+        }
+        .tag {
+            background: #2c3e50;
+            color: #3498db;
+            padding: 0.35rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            margin-right: 0.6rem;
+            border: 1px solid #3498db;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        .guitar-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            border: 2px solid #3498db;
+        }
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            color: #95a5a6;
+            font-size: 1.05rem;
+            background-color: #0a0a0a;
+        }
+    </style>
 </head>
 <body>
 
@@ -121,6 +121,9 @@
                 <span class="tag">Microcontroller</span>
             </div>
             <p><strong>Overview:</strong> A wireless control system utilizing a mobile device to toggle physical hardware.</p>
+            
+            <img src="guitar.png" alt="A classical guitar" class="guitar-image">
+
             <h3>Components Used:</h3>
             <ul>
                 <li>Arduino Nano</li>
@@ -129,14 +132,6 @@
             </ul>
             <h3>How It Works:</h3>
             <p>This project establishes serial communication between a smartphone and the microcontroller. By sending specific string commands from a mobile Bluetooth terminal, the board parses the incoming data and toggles the corresponding digital pins to control the LED states.</p>
-        </section>
-
-        <section class="project-card">
-            <h2>Next Project Title</h2>
-            <div>
-                <span class="tag">Category</span>
-            </div>
-            <p>Brief description of what you are building next.</p>
         </section>
 
     </div>
