@@ -88,6 +88,35 @@
             font-size: 1.05rem;
             background-color: #0a0a0a;
         }
+        /* Styling for the Want to Know More button */
+        .button-container {
+            text-align: center;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .more-button {
+            display: inline-block;
+            background: #1e1e1e; /* Matches the project card background */
+            color: #3498db; /* Blue text to show it is a link */
+            padding: 1rem 2.5rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 10px;
+            border: 1px solid #2a2a2d;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            /* The same smooth transition timing */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* The Hover Effect */
+        .more-button:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(52, 152, 219, 0.25);
+            border-color: #3498db;
+            color: #ffffff; /* Text turns white on hover */
+        }
     </style>
 </head>
 <body>
@@ -129,6 +158,13 @@
         </section>
 
     </div>
+    </div> <div class="button-container">
+        <a href="more.html" class="more-button">Want to know more?</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Serge. Hosted on GitHub Pages.</p>
+    </footer>
 
     <footer>
         <p>&copy; 2026 Sergosus. Hosted on GitHub Pages.</p>
