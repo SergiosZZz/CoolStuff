@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <nav style="background-color: #1e1e1e; padding: 1rem 0; text-align: center; border-bottom: 1px solid #2a2a2d;">
+        <a href="index.html"
+            style="color: #3498db; text-decoration: none; margin: 0 20px; font-size: 1.2rem; font-weight: bold;">Home</a>
+        <a href="ford-fusion-battery.html"
+            style="color: #3498db; text-decoration: none; margin: 0 20px; font-size: 1.2rem; font-weight: bold;">Auto
+            Repairs</a>
+        <a href="tetris.html"
+            style="color: #3498db; text-decoration: none; margin: 0 20px; font-size: 1.2rem; font-weight: bold;">🎮 Play
+            Tetris</a>
+    </nav>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serge | Projects & Builds</title>
@@ -11,10 +22,13 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background-color: #121212; /* Oily black background */
-            color: #f0f4f8; /* Bright white text */
+            background-color: #121212;
+            /* Oily black background */
+            color: #f0f4f8;
+            /* Bright white text */
             font-size: 1.15rem;
         }
+
         header {
             background: #0a0a0a;
             color: #ffffff;
@@ -23,38 +37,45 @@
             border-bottom: 3px solid #3498db;
             box-shadow: 0 0 15px rgba(52, 152, 219, 0.4);
         }
+
         header h1 {
             margin: 0;
             font-size: 3.2rem;
             letter-spacing: 1px;
         }
+
         header p {
             color: #bdc3c7;
             margin-top: 1rem;
             font-weight: 300;
             font-size: 1.2rem;
         }
+
         .container {
             width: 85%;
             max-width: 1100px;
             margin: 3rem auto;
         }
+
         .project-card {
-            background: #1e1e1e; /* Slightly lighter oily black for the blocks */
+            background: #1e1e1e;
+            /* Slightly lighter oily black for the blocks */
             padding: 2.5rem;
             margin-bottom: 2.5rem;
             border-radius: 10px;
             border: 1px solid #2a2a2d;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
             /* Smooth transition for the hover effect */
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
+
         /* The Hover Effect */
         .project-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 24px rgba(52, 152, 219, 0.25);
             border-color: #3498db;
         }
+
         h2 {
             color: #ffffff;
             margin-top: 0;
@@ -62,13 +83,18 @@
             border-bottom: 1px solid #333;
             padding-bottom: 10px;
         }
+
         h3 {
             color: #e0e0e0;
         }
-        p, ul {
+
+        p,
+        ul {
             font-size: 1.15rem;
-            color: #dcdcdc; /* Light grey for paragraphs so it's easy to read */
+            color: #dcdcdc;
+            /* Light grey for paragraphs so it's easy to read */
         }
+
         .tag {
             background: #2c3e50;
             color: #3498db;
@@ -81,6 +107,7 @@
             display: inline-block;
             margin-bottom: 1rem;
         }
+
         footer {
             text-align: center;
             padding: 3rem 0;
@@ -88,37 +115,42 @@
             font-size: 1.05rem;
             background-color: #0a0a0a;
         }
+
         /* Styling for the Want to Know More button */
         .button-container {
             text-align: center;
             margin-top: 2rem;
             margin-bottom: 3rem;
         }
-        
+
         .more-button {
             display: inline-block;
-            background: #1e1e1e; /* Matches the project card background */
-            color: #3498db; /* Blue text to show it is a link */
+            background: #1e1e1e;
+            /* Matches the project card background */
+            color: #3498db;
+            /* Blue text to show it is a link */
             padding: 1rem 2.5rem;
             font-size: 1.25rem;
             font-weight: bold;
             text-decoration: none;
             border-radius: 10px;
             border: 1px solid #2a2a2d;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
             /* The same smooth transition timing */
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
-        
+
         /* The Hover Effect */
         .more-button:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 24px rgba(52, 152, 219, 0.25);
             border-color: #3498db;
-            color: #ffffff; /* Text turns white on hover */
+            color: #ffffff;
+            /* Text turns white on hover */
         }
     </style>
 </head>
+
 <body>
 
     <header>
@@ -127,39 +159,45 @@
     </header>
 
     <div class="container">
-        
+
         <section class="project-card">
             <h2>About Me</h2>
-            <p> My name is Sergosus de Krupenkovus. Let me tell ya something, there is nothing in the world that I love more than eating pussy and playing Minecraft. 
-            I also enjoy sex and playing guitar. Now I know that I am a man with a one track mind and there is so much to do in a one lifetime. Also there is something
-            to be said about electronics and engineering, yes I supose so. Time to time I tinker with the matter of physical worlds but I am not special at all. 
-            I prefer banging chords on my strat than sit down with solder iron in my hand. <br>
-            Also I can do stuff on pull-up bar but recently I dislocated my elbow so I am not doing that right now or as of late</p>
-        </section>
-
-        <section class="project-card">
-            <h2>Bluetooth-Controlled LED Circuit</h2>
-            <div>
-                <span class="tag">Hardware</span>
-                <span class="tag">C++</span>
-                <span class="tag">Microcontroller</span>
-            </div>
-            <p><strong>Overview:</strong> A wireless control system utilizing a mobile device to toggle physical hardware.</p>
-            
-
-            <h3>Components Used:</h3>
-            <ul>
-                <li>Arduino Nano</li>
-                <li>HC-05 Bluetooth Module</li>
-                <li>Breadboard, LEDs, and 220-ohm Resistors</li>
-            </ul>
-            <h3>How It Works:</h3>
-            <p>This project establishes serial communication between a smartphone and the microcontroller. By sending specific string commands from a mobile Bluetooth terminal, the board parses the incoming data and toggles the corresponding digital pins to control the LED states.</p>
+            <p> My name is Sergosus de Krupenkovus. Let me tell ya something, there is nothing in the world that I love
+                more than eating pussy and playing Minecraft.
+                I also enjoy sex and playing guitar. Now I know that I am a man with a one track mind and there is so
+                much to do in a one lifetime. Also there is something
+                to be said about electronics and engineering, yes I supose so. Time to time I tinker with the matter of
+                physical worlds but I am not special at all.
+                I prefer banging chords on my strat than sit down with solder iron in my hand. <br>
+                Also I can do stuff on pull-up bar but recently I dislocated my elbow so I am not doing that right now
+                or as of late</p>
         </section>
 
     </div>
-    </div> <div class="button-container">
+    </div>
+    <div class="button-container">
         <a href="more.html" class="more-button">Want to know more?</a>
+        <section class="project-card">
+            <h2>JavaScript Tetris</h2>
+            <div>
+                <span class="tag">Software</span>
+                <span class="tag">JavaScript</span>
+                <span class="tag">Game Dev</span>
+            </div>
+            <p><strong>Overview:</strong> A fully playable browser game built entirely from scratch using HTML5 Canvas
+                and Vanilla JavaScript.</p>
+
+            <h3>Core Mechanics Built:</h3>
+            <ul>
+                <li>Custom 2D matrix collision detection</li>
+                <li>Dynamic line-clearing, level progression, and scoring system</li>
+                <li>Keyboard controls with wall-kick rotation logic</li>
+            </ul>
+
+            <div style="margin-top: 2rem;">
+                <a href="tetris.html" class="more-button">Play Tetris Now</a>
+            </div>
+        </section>
     </div>
 
     <footer>
@@ -167,4 +205,5 @@
     </footer>
 
 </body>
+
 </html>
