@@ -382,7 +382,26 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+
+        // 🔴 PASTE YOUR ACTUAL FIREBASE CONFIG HERE 🔴
+        const firebaseConfig = {
+            apiKey: "AIzaSyDUsWeV3roJE7GGtcuIOfZt9l5gWf0VOpk",
+            authDomain: "tetris-high-score.firebaseapp.com",
+            projectId: "tetris-high-score",
+            storageBucket: "tetris-high-score.firebasestorage.app",
+            messagingSenderId: "461179961364",
+            appId: "1:461179961364:web:4b930a79a0e562dcc1a701"
+        };
+
+        // Initialize Firebase Backend
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+
+        // --- CANVAS SETUP ---
         const canvas = document.getElementById('tetris');
         const context = canvas.getContext('2d');
         context.scale(30, 30);
@@ -396,8 +415,8 @@
         let dropCounter = 0, dropInterval = 1000, lastTime = 0, nextMatrix = null;
 
         // Load High Scores from Local Browser Storage (Defaults to empty array)
-        let highScores = JSON.parse(localStorage.getItem('tetrisHighScores')) || [];
-        const SCORE_THRESHOLD = 10000; // Must beat 20k to enter score
+        let cloudHighScores = [];
+        const SCORE_THRESHOLD = 300; // Must beat 20k to enter score
 
         const colors = [null, '#9b59b6', '#f1c40f', '#e67e22', '#3498db', '#1abc9c', '#2ecc71', '#e74c3c'];
 
@@ -446,36 +465,56 @@
             drawMatrix(nextMatrix, offset, nextContext);
         }
 
-        // HIGH SCORE LOGIC
+        // FIREBASE CLOUD LOGIC
         function updateHighScoreUI() {
             const list = document.getElementById('score-list');
             list.innerHTML = '';
 
-            if (highScores.length === 0) {
+            if (cloudHighScores.length === 0) {
                 list.innerHTML = '<li><span>No scores yet!</span></li>';
                 return;
             }
 
-            highScores.forEach(entry => {
+            cloudHighScores.forEach(entry => {
                 const li = document.createElement('li');
                 li.innerHTML = `<span>${entry.name}</span> <span style="color: #3498db; font-weight: bold;">${entry.score}</span>`;
                 list.appendChild(li);
             });
         }
 
-        function saveHighScore() {
+        async function fetchHighScores() {
+            try {
+                const q = query(collection(db, "highscores"), orderBy("score", "desc"), limit(5));
+                const querySnapshot = await getDocs(q);
+
+                cloudHighScores = [];
+                querySnapshot.forEach((doc) => {
+                    cloudHighScores.push(doc.data());
+                });
+
+                updateHighScoreUI();
+            } catch (error) {
+                console.error("Firebase Read Error:", error);
+                document.getElementById('score-list').innerHTML = '<li><span>Cloud error</span></li>';
+            }
+        }
+
+        async function saveHighScore() {
             let name = document.getElementById('player-name').value.trim().toUpperCase() || 'MR S';
 
-            highScores.push({ name: name, score: score });
-            highScores.sort((a, b) => b.score - a.score); // Sort highest to lowest
-            highScores.splice(5); // Keep only the top 5
-
-            localStorage.setItem('tetrisHighScores', JSON.stringify(highScores));
-
-            updateHighScoreUI();
-
-            // Hide input, show regular restart button
             document.getElementById('name-input-section').classList.add('hidden');
+            document.getElementById('save-score-btn').innerText = "Saving...";
+
+            try {
+                await addDoc(collection(db, "highscores"), {
+                    name: name,
+                    score: score
+                });
+                await fetchHighScores();
+            } catch (error) {
+                console.error("Firebase Write Error:", error);
+            }
+
             document.getElementById('restart-btn').classList.remove('hidden');
         }
 
@@ -531,8 +570,12 @@
             isGameOver = true;
             document.getElementById('final-score').innerText = score;
 
-            // Check if score is over 20k AND qualifies for top 5
-            if (score >= SCORE_THRESHOLD && (highScores.length < 5 || score > highScores[highScores.length - 1].score)) {
+
+            // Check if score beats threshold AND is higher than the 5th place cloud score
+            const qualifies = score >= SCORE_THRESHOLD &&
+                (cloudHighScores.length < 5 || score > cloudHighScores[cloudHighScores.length - 1].score);
+
+            if (qualifies) {
                 document.getElementById('name-input-section').classList.remove('hidden');
                 document.getElementById('restart-btn').classList.add('hidden'); // Hide restart until saved
                 document.getElementById('game-over-title').style.color = '#f1c40f'; // Turn title Gold
@@ -697,8 +740,8 @@
             requestAnimationFrame(update);
         }
 
-        // Initialize UI and start game
-        updateHighScoreUI();
+        // INIT CLOUD AND START
+        fetchHighScores();
         playerReset();
         update();
     </script>
