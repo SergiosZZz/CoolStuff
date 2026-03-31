@@ -14,7 +14,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            /* Changed from center to allow scrolling on mobile */
             min-height: 100vh;
             margin: 0;
             padding: 20px 0;
@@ -49,24 +48,53 @@
 
         .score-panel h2 {
             margin: 0 0 0.5rem 0;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             color: #ffffff;
         }
 
         .score-panel .value {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #3498db;
             font-weight: bold;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         #next-piece {
             background-color: #000000;
             border: 2px solid #3498db;
             border-radius: 4px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
             display: block;
+        }
+
+        /* High Score Board Styling */
+        .high-scores-container {
+            margin-top: 1rem;
+            width: 100%;
+            border-top: 1px solid #333;
+            padding-top: 1rem;
+        }
+
+        .high-scores-container h2 {
+            color: #f1c40f;
+            font-size: 1.2rem;
+        }
+
+        #score-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+            font-size: 1rem;
+            color: #bdc3c7;
+        }
+
+        #score-list li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+            border-bottom: 1px dashed #333;
         }
 
         .canvas-container {
@@ -94,6 +122,7 @@
             justify-content: center;
             border-radius: 4px;
             text-align: center;
+            padding: 20px;
         }
 
         #game-over-screen {
@@ -132,6 +161,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             width: 100%;
+            margin-top: 0.5rem;
         }
 
         .action-btn:hover {
@@ -140,18 +170,29 @@
             color: #ffffff;
         }
 
-        /* --- MOBILE CONTROLS & RESPONSIVENESS --- */
+        /* Name Input Form */
+        #name-input-section input {
+            background: #0a0a0a;
+            color: #fff;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            padding: 0.5rem;
+            font-size: 1.2rem;
+            text-align: center;
+            width: 80%;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
 
+        /* --- MOBILE CONTROLS & RESPONSIVENESS --- */
         .mobile-controls {
             display: none;
-            /* Hidden on desktop */
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-top: 15px;
             width: 100%;
             max-width: 300px;
             user-select: none;
-            /* Stops text highlighting when tapping */
         }
 
         .control-btn {
@@ -164,7 +205,6 @@
             font-weight: bold;
             cursor: pointer;
             touch-action: manipulation;
-            /* CRITICAL: Prevents double-tap zoom on phones */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -175,7 +215,7 @@
             color: #ffffff;
         }
 
-        /* D-Pad Layout */
+        /* Updated D-Pad Layout to include Hard Drop */
         #btn-rotate {
             grid-column: 2;
             grid-row: 1;
@@ -196,17 +236,22 @@
             grid-row: 2;
         }
 
-        /* When the screen is narrow (like a phone), stack everything vertically */
-        /* When the screen is narrow (like a phone), stack and scale everything */
-        @media (max-width: 768px) {
+        #btn-hard-drop {
+            grid-column: 1 / span 3;
+            grid-row: 3;
+            padding: 10px 0;
+            font-size: 1.5rem;
+        }
+
+        /* Spans across the bottom */
+
+        @media (max-width: 1024px) {
             body {
                 padding: 10px 0;
-                /* Tighter padding to save space */
             }
 
             h1 {
                 font-size: 1.5rem;
-                /* Smaller title */
                 margin-bottom: 5px;
             }
 
@@ -217,10 +262,10 @@
                 width: 100%;
             }
 
-            /* Compact the score panel into a tight horizontal bar */
             .score-panel {
                 flex-direction: row;
-                flex-wrap: nowrap;
+                flex-wrap: wrap;
+                /* Allows the high score board to drop to the next line */
                 justify-content: center;
                 align-items: center;
                 width: 95%;
@@ -252,25 +297,25 @@
                 width: auto;
             }
 
-            /* THE MAGIC CANVAS FIX */
+            .high-scores-container {
+                width: 100%;
+                margin-top: 0.5rem;
+                padding-top: 0.5rem;
+            }
+
             #tetris {
-                max-height: 52vh;
-                /* Forces the canvas to shrink to fit the screen */
+                max-height: 50vh;
                 width: auto;
-                /* Automatically scales the width to keep the exact 1:2 shape */
             }
 
             .mobile-controls {
-                display: grid;
-                /* Make the joypad appear! */
+                display: grid !important;
                 margin-top: 5px;
                 max-width: 260px;
-                /* Keeps the joypad centered and easy to reach */
             }
 
             .control-btn {
                 padding: 10px 0;
-                /* Slightly thinner buttons */
             }
         }
     </style>
@@ -295,9 +340,15 @@
                 <canvas id="next-piece" width="120" height="120"></canvas>
             </div>
             <button id="pause-btn" class="action-btn">Pause</button>
+
+            <div class="high-scores-container">
+                <h2>Top 5</h2>
+                <ul id="score-list">
+                </ul>
+            </div>
         </div>
 
-        <div>
+        <div style="display: flex; flex-direction: column; align-items: center;">
             <div class="canvas-container">
                 <canvas id="tetris" width="300" height="600"></canvas>
 
@@ -306,10 +357,17 @@
                 </div>
 
                 <div id="game-over-screen" class="overlay hidden">
-                    <h2>GAME OVER</h2>
+                    <h2 id="game-over-title">GAME OVER</h2>
                     <p style="font-size: 1.2rem;">Final Score</p>
                     <div id="final-score" class="value" style="font-size: 2.5rem; color: #3498db; margin-bottom: 1rem;">
                         0</div>
+
+                    <div id="name-input-section" class="hidden">
+                        <p style="color: #f1c40f; font-weight: bold; margin-bottom: 5px;">NEW HIGH SCORE!</p>
+                        <input type="text" id="player-name" maxlength="10" placeholder="ENTER NAME">
+                        <button id="save-score-btn" class="action-btn">Save Score</button>
+                    </div>
+
                     <button id="restart-btn" class="action-btn" style="width: auto;">Play Again</button>
                 </div>
             </div>
@@ -319,12 +377,12 @@
                 <button id="btn-left" class="control-btn">←</button>
                 <button id="btn-down" class="control-btn">↓</button>
                 <button id="btn-right" class="control-btn">→</button>
+                <button id="btn-hard-drop" class="control-btn">⤓ HARD DROP</button>
             </div>
         </div>
     </div>
 
     <script>
-        // SETUP CANVASES
         const canvas = document.getElementById('tetris');
         const context = canvas.getContext('2d');
         context.scale(30, 30);
@@ -333,9 +391,13 @@
         const nextContext = nextCanvas.getContext('2d');
         nextContext.scale(30, 30);
 
-        // GAME STATE
-        let score = 0, level = 1, isGameOver = false, isPaused = false;
+        // GAME & STORAGE STATE
+        let score = 0, level = 1, totalLines = 0, isGameOver = false, isPaused = false;
         let dropCounter = 0, dropInterval = 1000, lastTime = 0, nextMatrix = null;
+
+        // Load High Scores from Local Browser Storage (Defaults to empty array)
+        let highScores = JSON.parse(localStorage.getItem('tetrisHighScores')) || [];
+        const SCORE_THRESHOLD = 10000; // Must beat 20k to enter score
 
         const colors = [null, '#9b59b6', '#f1c40f', '#e67e22', '#3498db', '#1abc9c', '#2ecc71', '#e74c3c'];
 
@@ -384,6 +446,41 @@
             drawMatrix(nextMatrix, offset, nextContext);
         }
 
+        // HIGH SCORE LOGIC
+        function updateHighScoreUI() {
+            const list = document.getElementById('score-list');
+            list.innerHTML = '';
+
+            if (highScores.length === 0) {
+                list.innerHTML = '<li><span>No scores yet!</span></li>';
+                return;
+            }
+
+            highScores.forEach(entry => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${entry.name}</span> <span style="color: #3498db; font-weight: bold;">${entry.score}</span>`;
+                list.appendChild(li);
+            });
+        }
+
+        function saveHighScore() {
+            let name = document.getElementById('player-name').value.trim().toUpperCase() || 'MR S';
+
+            highScores.push({ name: name, score: score });
+            highScores.sort((a, b) => b.score - a.score); // Sort highest to lowest
+            highScores.splice(5); // Keep only the top 5
+
+            localStorage.setItem('tetrisHighScores', JSON.stringify(highScores));
+
+            updateHighScoreUI();
+
+            // Hide input, show regular restart button
+            document.getElementById('name-input-section').classList.add('hidden');
+            document.getElementById('restart-btn').classList.remove('hidden');
+        }
+
+        document.getElementById('save-score-btn').addEventListener('click', saveHighScore);
+
         // MECHANICS
         function collide(board, player) {
             const m = player.matrix, o = player.pos;
@@ -408,9 +505,11 @@
                 const basePoints = [0, 40, 100, 300, 1200];
                 score += basePoints[linesCleared] * level;
                 document.getElementById('score').innerText = score;
-                level = Math.floor(score / 500) + 1;
+
+                totalLines += linesCleared;
+                level = Math.floor(totalLines / 10) + 1;
                 document.getElementById('level').innerText = level;
-                dropInterval = Math.max(100, 1000 - (level - 1) * 100);
+                dropInterval = Math.max(100, 1000 - (level - 1) * 80);
             }
         }
 
@@ -431,6 +530,18 @@
         function triggerGameOver() {
             isGameOver = true;
             document.getElementById('final-score').innerText = score;
+
+            // Check if score is over 20k AND qualifies for top 5
+            if (score >= SCORE_THRESHOLD && (highScores.length < 5 || score > highScores[highScores.length - 1].score)) {
+                document.getElementById('name-input-section').classList.remove('hidden');
+                document.getElementById('restart-btn').classList.add('hidden'); // Hide restart until saved
+                document.getElementById('game-over-title').style.color = '#f1c40f'; // Turn title Gold
+            } else {
+                document.getElementById('name-input-section').classList.add('hidden');
+                document.getElementById('restart-btn').classList.remove('hidden');
+                document.getElementById('game-over-title').style.color = '#e74c3c'; // Normal Red
+            }
+
             document.getElementById('game-over-screen').classList.remove('hidden');
         }
 
@@ -449,7 +560,7 @@
 
         function resetGame() {
             board.forEach(row => row.fill(0));
-            score = 0; level = 1; dropInterval = 1000;
+            score = 0; level = 1; totalLines = 0; dropInterval = 1000;
             isGameOver = false; isPaused = false; nextMatrix = null;
             document.getElementById('score').innerText = score;
             document.getElementById('level').innerText = level;
@@ -468,6 +579,19 @@
             player.pos.y = 0;
             player.pos.x = (Math.floor(board[0].length / 2)) - (Math.floor(player.matrix[0].length / 2));
             if (collide(board, player)) triggerGameOver();
+        }
+
+        // --- NEW HARD DROP FUNCTION ---
+        function playerHardDrop() {
+            // Keep moving down until collision
+            while (!collide(board, player)) {
+                player.pos.y++;
+            }
+            player.pos.y--; // Step back up one out of the floor
+            merge(board, player);
+            boardSweep();
+            playerReset();
+            dropCounter = 0;
         }
 
         function playerDrop() {
@@ -506,38 +630,61 @@
 
         // --- CONTROLS WIRE-UP ---
 
-        // 1. Keyboard Controls
         document.addEventListener('keydown', event => {
-            if (event.key === 'p' || event.key === 'P') { togglePause(); return; }
+            if (event.code === 'KeyP') { togglePause(); return; }
             if (isGameOver || isPaused) return;
-            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].indexOf(event.key) > -1) event.preventDefault();
-            if (event.key === 'ArrowLeft' || event.key === 'a') playerMove(-1);
-            else if (event.key === 'ArrowRight' || event.key === 'd') playerMove(1);
-            else if (event.key === 'ArrowDown' || event.key === 's') playerDrop();
-            else if (event.key === 'ArrowUp' || event.key === 'w') playerRotate(1);
+
+            // Prevent default scrolling for all game keys (including Spacebar)
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space'].includes(event.code)) {
+                event.preventDefault();
+            }
+
+            if (event.code === 'ArrowLeft' || event.code === 'KeyA') playerMove(-1);
+            else if (event.code === 'ArrowRight' || event.code === 'KeyD') playerMove(1);
+            else if (event.code === 'ArrowDown' || event.code === 'KeyS') playerDrop();
+            else if (event.code === 'ArrowUp' || event.code === 'KeyW') playerRotate(1);
+            else if (event.code === 'Space') playerHardDrop(); // The new Hard Drop!
         });
 
-        // UI Buttons
         document.getElementById('restart-btn').addEventListener('click', resetGame);
         document.getElementById('pause-btn').addEventListener('click', () => {
             document.getElementById('pause-btn').blur();
             togglePause();
         });
 
-        // 2. Mobile Touch Controls
-        function setupTouch(id, action) {
+        function setupTouch(id, action, isContinuous = false) {
             const btn = document.getElementById(id);
-            // pointerdown responds instantly to both touches and mouse clicks
-            btn.addEventListener('pointerdown', (e) => {
-                e.preventDefault();
-                if (!isGameOver && !isPaused) action();
-            });
+            if (!btn) return;
+
+            if (!isContinuous) {
+                btn.addEventListener('pointerdown', (e) => {
+                    e.preventDefault();
+                    if (!isGameOver && !isPaused) action();
+                });
+            } else {
+                let intervalId;
+                const startAction = (e) => {
+                    e.preventDefault();
+                    if (isGameOver || isPaused) return;
+                    action();
+                    intervalId = setInterval(action, 50);
+                };
+                const stopAction = (e) => {
+                    e.preventDefault();
+                    clearInterval(intervalId);
+                };
+                btn.addEventListener('pointerdown', startAction);
+                btn.addEventListener('pointerup', stopAction);
+                btn.addEventListener('pointerout', stopAction);
+                btn.addEventListener('pointercancel', stopAction);
+            }
         }
 
         setupTouch('btn-left', () => playerMove(-1));
         setupTouch('btn-right', () => playerMove(1));
-        setupTouch('btn-down', () => playerDrop());
+        setupTouch('btn-down', () => playerDrop(), true);
         setupTouch('btn-rotate', () => playerRotate(1));
+        setupTouch('btn-hard-drop', () => playerHardDrop()); // Mobile Hard Drop
 
         // THE LOOP
         function update(time = 0) {
@@ -550,6 +697,8 @@
             requestAnimationFrame(update);
         }
 
+        // Initialize UI and start game
+        updateHighScoreUI();
         playerReset();
         update();
     </script>
