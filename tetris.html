@@ -26,9 +26,11 @@
             font-size: 2.5rem;
         }
 
+        /* Centers the 3-column layout */
         .game-wrapper {
             display: flex;
             align-items: flex-start;
+            justify-content: center; 
             gap: 2rem;
         }
 
@@ -326,6 +328,7 @@
     <h1>Tetris</h1>
 
     <div class="game-wrapper">
+        
         <div class="score-panel">
             <div>
                 <h2>Score</h2>
@@ -338,13 +341,6 @@
             <div>
                 <h2>Next</h2>
                 <canvas id="next-piece" width="120" height="120"></canvas>
-            </div>
-            <button id="pause-btn" class="action-btn">Pause</button>
-
-            <div class="high-scores-container">
-                <h2>Top 5</h2>
-                <ul id="score-list">
-                </ul>
             </div>
         </div>
 
@@ -359,8 +355,7 @@
                 <div id="game-over-screen" class="overlay hidden">
                     <h2 id="game-over-title">GAME OVER</h2>
                     <p style="font-size: 1.2rem;">Final Score</p>
-                    <div id="final-score" class="value" style="font-size: 2.5rem; color: #3498db; margin-bottom: 1rem;">
-                        0</div>
+                    <div id="final-score" class="value" style="font-size: 2.5rem; color: #3498db; margin-bottom: 1rem;">0</div>
 
                     <div id="name-input-section" class="hidden">
                         <p style="color: #f1c40f; font-weight: bold; margin-bottom: 5px;">NEW HIGH SCORE!</p>
@@ -380,6 +375,24 @@
                 <button id="btn-hard-drop" class="control-btn">⤓ HARD DROP</button>
             </div>
         </div>
+
+        <div class="score-panel">
+            <div class="high-scores-container" style="margin-top: 0; border-top: none; padding-top: 0;">
+                <h2>Top 5</h2>
+                <ul id="score-list"></ul>
+            </div>
+            
+            <button id="pause-btn" class="action-btn" style="margin-top: 20px;">Pause</button>
+
+            <audio id="bg-music" loop src="theme.wav" preload="auto"></audio>
+            <button id="music-btn" class="action-btn" style="margin-top: 10px;">🎵 Music: OFF</button>
+            
+            <div style="margin-top: 15px; width: 100%;">
+                <label for="volume-slider" style="color: #bdc3c7; font-size: 0.9rem; display: block; margin-bottom: 5px;">Volume</label>
+                <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" style="width: 100%; cursor: pointer; accent-color: #3498db;">
+            </div>
+        </div>
+
     </div>
 
     <script type="module">
@@ -693,6 +706,42 @@
         document.getElementById('pause-btn').addEventListener('click', () => {
             document.getElementById('pause-btn').blur();
             togglePause();
+        });
+        
+        // MUSIC TOGGLE LOGIC
+        const musicBtn = document.getElementById('music-btn');
+        const bgMusic = document.getElementById('bg-music');
+        let isMusicPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            musicBtn.blur(); // Prevent spacebar from clicking the button later
+            
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.innerText = '🎵 Music: OFF';
+                musicBtn.style.color = '#3498db';
+                musicBtn.style.borderColor = '#3498db';
+            } else {
+                bgMusic.play().catch(error => console.log("Audio play blocked:", error));
+                musicBtn.innerText = '🎵 Music: ON';
+                musicBtn.style.color = '#2ecc71'; // Turns green when playing
+                musicBtn.style.borderColor = '#2ecc71';
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // VOLUME MIXER LOGIC
+        const volumeSlider = document.getElementById('volume-slider');
+        bgMusic.volume = volumeSlider.value; // Sets the starting volume to 50%
+
+        // Listens for every tiny movement of the slider
+        volumeSlider.addEventListener('input', (event) => {
+            bgMusic.volume = event.target.value;
+        });
+
+        // Prevents the spacebar (Hard Drop) from accidentally moving the slider if it was the last thing clicked
+        volumeSlider.addEventListener('change', () => {
+            volumeSlider.blur(); 
         });
 
         function setupTouch(id, action, isContinuous = false) {
