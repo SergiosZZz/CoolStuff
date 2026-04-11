@@ -5,8 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tetris Build</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* Oily Dark Theme CSS */
+        
+        /* Retro Arcade Theme CSS */
         body {
             background-color: #121212;
             color: #f0f4f8;
@@ -17,13 +21,45 @@
             min-height: 100vh;
             margin: 0;
             padding: 20px 0;
-            font-family: 'Segoe UI', sans-serif;
+            /* The New Retro Font */
+            font-family: 'Press Start 2P', cursive; 
+            /* Adds a subtle global text shadow for that CRT glow */
+            text-shadow: 2px 2px 0px #000000;
+        }
+
+        /* THE ANIMATED BACKGROUND */
+        .animated-bg {
+            position: fixed; /* Locks it to the screen */
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1; /* Pushes it behind everything else */
+            
+            background-image: url('background.png');
+            background-repeat: repeat-x; /* Repeats horizontally */
+            background-size: auto 100vh; /* Scales to fit screen height */
+            
+            /* Keeps the 8-bit pixels crispy instead of blurry */
+            image-rendering: pixelated; 
+            
+            /* Dims the background so the game board pops */
+            filter: brightness(0.4) contrast(1.2); 
+            
+            /* The infinite sliding animation */
+            animation: scrollBackground 2000s linear infinite;
+        }
+
+        @keyframes scrollBackground {
+            0% { background-position: 0 0; }
+            100% { background-position: -2000px 0; } /* Slides the image left */
         }
 
         h1 {
             margin-top: 0;
-            margin-bottom: 10px;
-            font-size: 2.5rem;
+            margin-bottom: 15px;
+            font-size: 2rem;
+            color: #3498db;
+            /* Flashy Neon Title Glow */
+            text-shadow: 0 0 10px #3498db, 4px 4px 0px #000;
+            letter-spacing: 2px;
         }
 
         /* Centers the 3-column layout */
@@ -49,16 +85,18 @@
         }
 
         .score-panel h2 {
-            margin: 0 0 0.5rem 0;
-            font-size: 1.3rem;
+            margin: 0 0 0.8rem 0;
+            font-size: 0.8rem; /* Smaller for the bulky font */
             color: #ffffff;
+            line-height: 1.4;
         }
 
         .score-panel .value {
-            font-size: 2rem;
-            color: #3498db;
-            font-weight: bold;
-            margin-bottom: 1rem;
+            font-size: 1.2rem; /* Smaller for the bulky font */
+            color: #f1c40f; /* Changed to gold for a classic arcade feel */
+            font-weight: normal; /* Bold doesn't work well on 8-bit fonts */
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 5px #f1c40f;
         }
 
         #next-piece {
@@ -101,13 +139,29 @@
 
         .canvas-container {
             position: relative;
+            /* Gives the whole machine a bright neon backlight */
+            box-shadow: 0 0 30px rgba(52, 152, 219, 0.5);
+            border: 4px solid #1e1e1e;
+            border-radius: 8px;
+            background-color: #000;
+        }
+
+        /* The CRT Scanline Overlay */
+        .canvas-container::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            /* Creates the tiny horizontal television lines */
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.4) 50%);
+            background-size: 100% 4px;
+            z-index: 10;
+            pointer-events: none; /* Ensures the mouse clicks pass right through it */
         }
 
         #tetris {
-            border: 2px solid #3498db;
+            border: none; /* Removed border so it sits flush in the new container */
             background-color: #000000;
-            box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
-            border-radius: 4px;
             display: block;
         }
 
@@ -156,20 +210,56 @@
             background: #1e1e1e;
             color: #3498db;
             padding: 0.8rem 1.5rem;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            border: 1px solid #3498db;
+            font-family: 'Press Start 2P', cursive; /* Apply retro font */
+            font-size: 0.6rem; /* Scale down text */
+            border: 4px solid #3498db;
+            border-radius: 0;
             cursor: pointer;
-            transition: all 0.3s ease;
             width: 100%;
             margin-top: 0.5rem;
+            /* 3D plastic bevel effect */
+            box-shadow: inset -4px -4px 0px rgba(0, 0, 0, 0.6), 4px 4px 0px #000;
         }
 
         .action-btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.25);
-            color: #ffffff;
+            background: #2a2a2d;
+            transform: translateY(2px); /* Moves down slightly */
+            box-shadow: inset -4px -4px 0px rgba(0, 0, 0, 0.6), 2px 2px 0px #000; /* Shadow shrinks */
+        }
+
+        .action-btn:active {
+            background: #3498db;
+            color: #000 !important;
+            transform: translateY(4px); /* Presses all the way in */
+            box-shadow: inset 4px 4px 0px rgba(0, 0, 0, 0.6), 0px 0px 0px #000; /* Reverses bevel */
+        }
+
+        /* Custom 8-Bit Volume Slider */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type="range"]:focus {
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            cursor: pointer;
+            background: #000;
+            border: 2px solid #3498db;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            height: 22px;
+            width: 12px;
+            border-radius: 0;
+            background: #f1c40f;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -8px; /* Centers the thumb on the track */
+            border: 2px solid #000;
+            box-shadow: 2px 2px 0px #000;
         }
 
         /* Name Input Form */
@@ -200,8 +290,8 @@
         .control-btn {
             background: #1e1e1e;
             color: #3498db;
-            border: 2px solid #2a2a2d;
-            border-radius: 8px;
+            border: 4px solid #2a2a2d;
+            border-radius: 0;
             padding: 15px 0;
             font-size: 1.8rem;
             font-weight: bold;
@@ -210,11 +300,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: inset -4px -4px 0px rgba(0, 0, 0, 0.6), 4px 4px 0px #000;
         }
 
         .control-btn:active {
             background: #3498db;
-            color: #ffffff;
+            color: #000;
+            transform: translateY(4px);
+            box-shadow: inset 4px 4px 0px rgba(0, 0, 0, 0.6), 0px 0px 0px #000;
         }
 
         /* Updated D-Pad Layout to include Hard Drop */
@@ -264,33 +357,43 @@
                 width: 100%;
             }
 
-            .score-panel {
-                flex-direction: row;
-                flex-wrap: wrap;
-                /* Allows the high score board to drop to the next line */
-                justify-content: center;
-                align-items: center;
-                width: 95%;
-                padding: 10px;
-                gap: 15px;
-                min-width: unset;
-            }
+        /* The Left Panel */
+        .score-panel {
+            background: #1e1e1e;
+            padding: 1.5rem;
+            border-radius: 0; /* Removed curves */
+            border: 4px solid #2a2a2d; /* Thicker border */
+            box-shadow: 6px 6px 0px #000; /* Hard 8-bit shadow */
+            min-width: 140px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-            .score-panel h2 {
-                font-size: 0.9rem;
-                margin: 0;
-            }
+        .score-panel h2 {
+            margin: 0 0 0.8rem 0;
+            font-size: 0.8rem; /* Scaled down for Press Start 2P */
+            color: #ffffff;
+            line-height: 1.4;
+        }
 
-            .score-panel .value {
-                font-size: 1.2rem;
-                margin: 0;
-            }
+        .score-panel .value {
+            font-size: 1.2rem;
+            color: #f1c40f; 
+            font-weight: normal; 
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 5px #f1c40f;
+        }
 
-            #next-piece {
-                margin-bottom: 0;
-                width: 40px;
-                height: 40px;
-            }
+        #next-piece {
+            background-color: #000000;
+            border: 4px solid #f1c40f;
+            border-radius: 0;
+            margin-bottom: 1rem;
+            box-shadow: 4px 4px 0px #000;
+            display: block;
+        }
 
             #pause-btn {
                 margin-top: 0;
@@ -320,10 +423,44 @@
                 padding: 10px 0;
             }
         }
+        /* Arcade Instructions Plaque */
+        .controls-tooltip {
+            margin-top: 25px;
+            padding: 15px 10px;
+            background: #0a0a0a;
+            border: 4px solid #e74c3c; /* Arcade Red Border */
+            box-shadow: inset -4px -4px 0px rgba(0, 0, 0, 0.8), 4px 4px 0px #000;
+            width: 100%;
+            box-sizing: border-box; /* Prevents it from breaking the panel width */
+        }
+
+        .controls-tooltip h3 {
+            color: #e74c3c;
+            font-size: 0.7rem;
+            text-align: center;
+            margin: 0 0 12px 0;
+            text-shadow: 2px 2px 0px #000;
+            letter-spacing: 1px;
+        }
+
+        .controls-tooltip p {
+            margin: 8px 0;
+            font-size: 0.55rem;
+            color: #bdc3c7;
+            display: flex;
+            justify-content: space-between;
+            line-height: 1.4;
+        }
+
+        .controls-tooltip span {
+            color: #f1c40f; /* Gold text for the keys */
+        }
     </style>
 </head>
 
 <body>
+
+    <div class="animated-bg"></div>
 
     <h1>Tetris</h1>
 
@@ -391,6 +528,17 @@
                 <label for="volume-slider" style="color: #bdc3c7; font-size: 0.9rem; display: block; margin-bottom: 5px;">Volume</label>
                 <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5" style="width: 100%; cursor: pointer; accent-color: #3498db;">
             </div>
+
+            <div class="controls-tooltip">
+                <h3>CONTROLS</h3>
+                <p><span>W/&uarr;</span> Rotate</p>
+                <p><span>A/&larr;</span> Left</p>
+                <p><span>D/&rarr;</span> Right</p>
+                <p><span>S/&darr;</span> Soft Drop</p>
+                <p><span>SPACE</span> Hard Drop</p>
+                <p><span>P</span> Pause</p>
+            </div>
+            
         </div>
 
     </div>
@@ -413,7 +561,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-
         // --- CANVAS SETUP ---
         const canvas = document.getElementById('tetris');
         const context = canvas.getContext('2d');
@@ -422,6 +569,14 @@
         const nextCanvas = document.getElementById('next-piece');
         const nextContext = nextCanvas.getContext('2d');
         nextContext.scale(30, 30);
+
+        // CRISPY 8-BIT SETTINGS
+        context.imageSmoothingEnabled = false;
+        nextContext.imageSmoothingEnabled = false;
+
+        // LOAD THE SPRITESHEET
+        const blockImage = new Image();
+        blockImage.src = 'blocks.png'; // Your new 240x30 image!
 
         // GAME & STORAGE STATE
         let score = 0, level = 1, totalLines = 0, isGameOver = false, isPaused = false;
@@ -452,13 +607,18 @@
         const board = createMatrix(10, 20);
         const player = { pos: { x: 0, y: 0 }, matrix: null };
 
-        // DRAWING
+        // DRAWING WITH SPRITES
         function drawMatrix(matrix, offset, ctx = context) {
             matrix.forEach((row, y) => {
                 row.forEach((value, x) => {
                     if (value !== 0) {
-                        ctx.fillStyle = colors[value];
-                        ctx.fillRect(x + offset.x, y + offset.y, 1, 1);
+                        // Math logic:
+                        // value 1 (purple) * 30px = starts grabbing at pixel 30
+                        // value 2 (yellow) * 30px = starts grabbing at pixel 60
+                        const sourceX = value * 30; 
+                        
+                        // drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight)
+                        ctx.drawImage(blockImage, sourceX, 0, 30, 30, x + offset.x, y + offset.y, 1, 1);
                     }
                 });
             });
