@@ -33,7 +33,7 @@
             top: 0; left: 0; right: 0; bottom: 0;
             z-index: -1; /* Pushes it behind everything else */
             
-            background-image: url('background.png?v=2');
+            background-image: url('background.png');
             background-repeat: repeat-x; /* Repeats horizontally */
             background-size: auto 100vh; /* Scales to fit screen height */
             
@@ -332,21 +332,25 @@
         }
 
         #btn-hard-drop {
-            grid-column: 1 / span 3;
-            grid-row: 3;
-            padding: 10px 0;
-            font-size: 1.5rem;
+            grid-column: 1; /* Moves it exactly above the Left arrow */
+            grid-row: 1;    /* Puts it in the top row next to Rotate */
         }
 
         /* Spans across the bottom */
 
         @media (max-width: 1024px) {
+            /* 1. LOCKDOWN: Prevents all scrolling and pull-to-refresh */
             body {
+                overflow: hidden; 
+                position: fixed; 
+                width: 100vw;
+                height: 100vh;
+                touch-action: none; 
                 padding: 10px 0;
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
                 margin-bottom: 5px;
             }
 
@@ -355,72 +359,70 @@
                 align-items: center;
                 gap: 10px;
                 width: 100%;
+                height: 100%;
             }
 
-        /* The Left Panel */
-        .score-panel {
-            background: #1e1e1e;
-            padding: 1.5rem;
-            border-radius: 0; /* Removed curves */
-            border: 4px solid #2a2a2d; /* Thicker border */
-            box-shadow: 6px 6px 0px #000; /* Hard 8-bit shadow */
-            min-width: 140px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .score-panel h2 {
-            margin: 0 0 0.8rem 0;
-            font-size: 0.8rem; /* Scaled down for Press Start 2P */
-            color: #ffffff;
-            line-height: 1.4;
-        }
-
-        .score-panel .value {
-            font-size: 1.2rem;
-            color: #f1c40f; 
-            font-weight: normal; 
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 5px #f1c40f;
-        }
-
-        #next-piece {
-            background-color: #000000;
-            border: 4px solid #f1c40f;
-            border-radius: 0;
-            margin-bottom: 1rem;
-            box-shadow: 4px 4px 0px #000;
-            display: block;
-        }
-
-            #pause-btn {
-                margin-top: 0;
-                padding: 0.5rem 1rem;
-                font-size: 0.9rem;
-                width: auto;
+            /* Make the top score panel compact */
+            .score-panel:first-child {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                width: 95%;
+                padding: 10px;
+                gap: 15px;
+                min-width: unset;
             }
 
-            .high-scores-container {
-                width: 100%;
-                margin-top: 0.5rem;
-                padding-top: 0.5rem;
-            }
+            .score-panel h2 { font-size: 0.6rem; margin: 0; }
+            .score-panel .value { font-size: 0.9rem; margin: 0; margin-top: 5px; }
+            #next-piece { margin-bottom: 0; width: 40px; height: 40px; }
 
             #tetris {
-                max-height: 50vh;
+                max-height: 48vh; /* Shrinks canvas so the joypad fits */
                 width: auto;
             }
 
+            /* --- 2. THE MOBILE PAUSE MENU MAGIC --- */
+            
+            /* Hide Right panel normally so only the joypad is visible */
+            .score-panel:last-child {
+                display: none;
+            }
+
+            /* Turn Right panel into a full-screen overlay when paused */
+            body.is-paused .score-panel:last-child {
+                display: flex;
+                position: fixed;
+                top: 0; left: 0; right: 0; bottom: 0;
+                width: 100vw; height: 100vh;
+                z-index: 999;
+                background: rgba(10, 10, 10, 0.98);
+                border: none;
+                border-radius: 0;
+                overflow-y: auto;
+                padding: 40px 20px;
+                justify-content: flex-start;
+                /* THIS is the magic line that fixes the right-side cut-off */
+                box-sizing: border-box; 
+            }
+
+            /* Hide the default "PAUSED" text since the new menu takes over */
+            body.is-paused #pause-screen {
+                display: none !important;
+            }
+
+            /* Shape the joypad */
             .mobile-controls {
                 display: grid !important;
-                margin-top: 5px;
-                max-width: 260px;
+                margin-top: 5px; /* Reduced top margin */
+                width: 95vw;
+                max-width: 350px;
+                gap: 4px; /* Shrunk the gaps between buttons */
             }
 
             .control-btn {
-                padding: 10px 0;
+                padding: 6px 0; /* Shaved off padding inside the buttons */
+                font-size: 1.2rem; /* Scaled down the arrow icons slightly */
             }
         }
         /* Arcade Instructions Plaque */
@@ -506,10 +508,11 @@
 
             <div class="mobile-controls">
                 <button id="btn-rotate" class="control-btn">↻</button>
+                <button id="btn-pause-mobile" class="control-btn" style="grid-column: 3; grid-row: 1; font-family: 'Press Start 2P', cursive; font-size: 0.6rem; color: #e74c3c; border-color: #c0392b;">PAUSE</button>
                 <button id="btn-left" class="control-btn">←</button>
                 <button id="btn-down" class="control-btn">↓</button>
                 <button id="btn-right" class="control-btn">→</button>
-                <button id="btn-hard-drop" class="control-btn">⤓ HARD DROP</button>
+                <button id="btn-hard-drop" class="control-btn" style="font-size: 0.75rem; font-family: 'Press Start 2P', cursive; line-height: 1.3;">⤓<br>DROP</button>
             </div>
         </div>
 
@@ -764,12 +767,18 @@
         function togglePause() {
             if (isGameOver) return;
             isPaused = !isPaused;
+            
+            // NEW: Tells the CSS the game is paused
+            document.body.classList.toggle('is-paused', isPaused); 
+
             if (isPaused) {
                 document.getElementById('pause-screen').classList.remove('hidden');
-                document.getElementById('pause-btn').innerText = 'Resume';
+                document.getElementById('pause-btn').innerText = 'RESUME';
+                document.getElementById('btn-pause-mobile').innerText = 'RESUME';
             } else {
                 document.getElementById('pause-screen').classList.add('hidden');
-                document.getElementById('pause-btn').innerText = 'Pause';
+                document.getElementById('pause-btn').innerText = 'PAUSE';
+                document.getElementById('btn-pause-mobile').innerText = 'PAUSE';
                 requestAnimationFrame((time) => { lastTime = time; update(time); });
             }
         }
@@ -937,6 +946,7 @@
         setupTouch('btn-down', () => playerDrop(), true);
         setupTouch('btn-rotate', () => playerRotate(1));
         setupTouch('btn-hard-drop', () => playerHardDrop()); // Mobile Hard Drop
+        setupTouch('btn-pause-mobile', () => { document.getElementById('btn-pause-mobile').blur(); togglePause(); });
 
         // THE LOOP
         function update(time = 0) {
